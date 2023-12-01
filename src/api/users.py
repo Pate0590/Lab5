@@ -19,6 +19,9 @@ class Users(Resource):
         api.abort(404, f"User {user_id} does not exist")
     return user, 200
 class UsersList(Resource):
+ @api.marshal_with(user, as_list=True)
+ def get(self):
+    return User.query.all(), 200
  @api.expect(user, validate=True)
  def post(self):
     post_data = request.get_json()
