@@ -12,4 +12,4 @@ def test_app():
 def test_database():
  db.create_all()
  yield db # testing happens here
- db.session.remo
+ db.session.remove()
