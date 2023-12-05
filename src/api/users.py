@@ -24,7 +24,7 @@ class Users(Resource):
         if not user:
             api.abort(404, f"User {user_id} does not exist")
         return user, 200
-        @api.expect(user, validate=True)
+    @api.expect(user, validate=True)
     def put(self, user_id):
         user = User.query.get_or_404(user_id)
         data = request.get_json()
