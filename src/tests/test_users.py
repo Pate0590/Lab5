@@ -1,6 +1,6 @@
 import json
 from src.api.models import User
-
+from src import db
 
 def test_add_user(test_app, test_database):
     client = test_app.test_client()
@@ -69,7 +69,7 @@ def test_single_user(test_app, test_database):
 
 def test_single_user_incorrect_id(test_app, test_database):
     client = test_app.test_client()
-    resp = client.get("/users/999")0
+    resp = client.get("/users/999")
     data = json.loads(resp.data.decode())
     assert resp.status_code == 404
     assert "User 999 does not exist" in data["message"]
@@ -83,7 +83,7 @@ def test_all_users(test_app, test_database, add_user):
    data = json.loads(resp.data.decode())
    assert resp.status_code == 200
    assert len(data) == 2
-   assert "john" in data[0]["username"]0
+   assert "john" in data[0]["username"]
    assert "john@algonquincollege.com" in data[0]["email"]
    assert "fletcher" in data[1]["username"]
    assert "fletcher@notreal.com" in data[1]["email"]
