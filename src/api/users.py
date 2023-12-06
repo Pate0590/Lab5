@@ -31,7 +31,8 @@ class Users(Resource):
         user.username = data.get('username', user.username)
         user.email = data.get('email', user.email)
         db.session.commit()
-        return api.marshal(user, user), 200
+        return {'message': f'User {user_id} successfully updated.'}, 200
+
 
     def delete(self, user_id):
         user = User.query.get_or_404(user_id)

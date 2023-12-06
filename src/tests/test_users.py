@@ -87,3 +87,28 @@ def test_all_users(test_app, test_database, add_user):
    assert "john@algonquincollege.com" in data[0]["email"]
    assert "fletcher" in data[1]["username"]
    assert "fletcher@notreal.com" in data[1]["email"]
+
+def test_delete_user(test_app, test_database):
+    user = User(username="jeffreyDelete", email="jeffreyDelete@testdriven.io")
+    db.session.add(user)
+    db.session.commit()
+    client = test_app.test_client()
+    resp = client.delete(f"/users/{user.id}")
+    data = json.loads(resp.data.decode())
+    assert resp.status_code == 200
+    assert f"User {user.id} successfully deleted." in data["message"]
+
+def test_update_user(test_app, test_database):
+    user = User(username="jeffreyToBeUpdated", email="jeffreyToBeUpdated@testdriven.io")
+    db.session.add(user)
+    db.session.commit()
+    client = test_app.test_client()
+    resp = client.put(
+        f"/users/{user.id}",
+        data=json.dumps({"username": "jeffreyUpdated", "email": "jeffreyUpdated@algonquincollege.com"}),
+        content_type="application/json",
+    )
+    data = json.loads(resp.data.decode())
+    assert resp.status_code == 200
+    assert f"User {user.id} successfully updated." in data["message"]
+
